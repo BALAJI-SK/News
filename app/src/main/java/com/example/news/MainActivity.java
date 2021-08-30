@@ -6,21 +6,26 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
     ProgressBar indicator;
     TextView noInternet;
-    List<News> newsList;
+    NewsAdapter newsAdapter;
     String link="https://content.guardianapis.com/search?q=sports&show-tags=contributor&api-key=test";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +35,16 @@ public class MainActivity extends AppCompatActivity {
         indicator=findViewById(R.id.indicator_progress);
         ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
          boolean isConnected= checkConnectivity(cm);
+
          if(!isConnected){
              noInternet.setVisibility(View.VISIBLE);
              indicator.setVisibility(View.INVISIBLE);
          }else {
-        ExecutorService executorService= Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-        newsList=FetchData.fetchFromUrl(link);
-        runOnUiThread(() -> {
+
+             getSupportLoaderManager().initLoader(Constant.NEWS_LOADER_ID, null, this);
+
             indicator.setVisibility(View.INVISIBLE);
-            NewsAdapter newsAdapter = new NewsAdapter(MainActivity.this,newsList);
+           newsAdapter = new NewsAdapter(MainActivity.this,new ArrayList<News>());
             ListView listView= findViewById(R.id.list_view);
 
             listView.setAdapter(newsAdapter);
@@ -48,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent website =new Intent(Intent.ACTION_VIEW, Uri.parse(currentNews.getWebLink()));
                 startActivity(website);
             });
-        });
-        });
+
     }
     }
 
@@ -57,4 +61,42 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();}
+
+    @NonNull
+    @Override
+    public Loader<List<News>> onCreateLoader(int id, @Nullable Bundle args) {
+
+        return new NewsLoaders(MainActivity.this,CreateLink());
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<List<News>> loader, List<News> data) {
+indicator.setVisibility(View.INVISIBLE);
+newsAdapter.clear();
+if(data !=null){
+    newsAdapter.addAll(data);
+}else{
+    Log.e(Constant.LOG_MSG, "Data not available... ");
+    noInternet.setVisibility(View.VISIBLE);
+}
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<List<News>> loader) {
+       newsAdapter.clear();
+    }
+    private  String CreateLink(){
+        // parse breaks apart the URI string
+        Uri baseUri = Uri.parse(Constant.BASE_URL);
+        // buildUpon prepares the base Uri
+        Uri.Builder builder = baseUri.buildUpon();
+        // append query parameter
+       // builder.appendQueryParameter("q", "sports");
+        builder.appendQueryParameter(Constant.KEY_SHOW_TAGS, Constant.KEY_CONTRIBUTOR);
+        builder.appendQueryParameter(Constant.KEY_ORDER_BY, "newest");
+        builder.appendQueryParameter(Constant.KEY_PAGE_SIZE, "15");
+        builder.appendQueryParameter(Constant.API_KEY, Constant.KEY_TEST);
+       return builder.toString();
+       //return link;
+    }
 }

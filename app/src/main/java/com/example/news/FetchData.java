@@ -69,11 +69,11 @@ try {
             return null;}
             try {
              urlConnection= (HttpURLConnection) url.openConnection() ;
-             urlConnection.setConnectTimeout(2000);
-             urlConnection.setReadTimeout(1000);
-             urlConnection.setRequestMethod("GET");
+             urlConnection.setConnectTimeout(Constant.CONNECT_TIMEOUT);
+             urlConnection.setReadTimeout(Constant.READ_TIMEOUT);
+             urlConnection.setRequestMethod(Constant.REQUEST_METHOD);
              urlConnection.connect();
-             if(urlConnection.getResponseCode()==200){
+             if(urlConnection.getResponseCode()==Constant.RESPONSE_CODE){
                  inputStream= urlConnection.getInputStream();
                  jsonResponse=getInfoFromInputStream(inputStream);
              }

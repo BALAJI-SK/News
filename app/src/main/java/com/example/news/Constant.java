@@ -16,13 +16,13 @@ public class Constant {
     public static final int NEWS_LOADER_ID = 1;
 
     // Http request params.
-    public static final int READ_TIMEOUT = 10000;
-    public static final int CONNECT_TIMEOUT = 15000;
+    public static final int READ_TIMEOUT = 1000;
+    public static final int CONNECT_TIMEOUT = 1500;
     public static final int RESPONSE_CODE = 200;
     public static final String REQUEST_METHOD = "GET";
 
     // Guardian Api end point
-    public static final String BASE_URL = "http://content.guardianapis.com/search?";
+    public static final String BASE_URL = "https://content.guardianapis.com/search";
 
     // Query Uri builder
     public static final String KEY_SHOW_TAGS = "show-tags";
