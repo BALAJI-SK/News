@@ -1,28 +1,41 @@
 package com.example.news;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-
+    List<News> newsList;
+    String link="https://content.guardianapis.com/search?q=sports&api-key=test";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<News> newsList =new ArrayList<>();
-        newsList.add(new News("Sports","Balaji won", "22 Mar, 2021", "3:00 PM"));
-        newsList.add(new News("Politics", "Hi All", "22 Mar,2021", "3:00 PM"));
-        newsList.add(new News("Sports","Balaji won", "22 Mar, 2021", "3:00 PM"));
-        newsList.add(new News("Politics", "Hi All", "22 Mar,2021", "3:00 PM"));
-        newsList.add(new News("Sports","Balaji won", "22 Mar, 2021", "3:00 PM"));
-        newsList.add(new News("Politics", "Hi All", "22 Mar,2021", "3:00 PM"));
-        NewsAdapter newsAdapter = new NewsAdapter(this,newsList);
-        ListView listView= findViewById(R.id.list_view);
-        listView.setAdapter(newsAdapter);
+
+
+        ExecutorService executorService= Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+        newsList=FetchData.fetchFromUrl(link);
+        runOnUiThread(() -> {
+            NewsAdapter newsAdapter = new NewsAdapter(MainActivity.this,newsList);
+            ListView listView= findViewById(R.id.list_view);
+
+            listView.setAdapter(newsAdapter);
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                News currentNews =newsAdapter.getItem(position);
+                Intent website =new Intent(Intent.ACTION_VIEW, Uri.parse(currentNews.getWebLink()));
+                startActivity(website);
+            });
+        });
+        });
     }
 }
