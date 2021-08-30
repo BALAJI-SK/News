@@ -17,14 +17,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/section"
+            android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:textAllCaps="true"
-            android:textColor="@color/textColorDataDetails"
+            android:textColor="@color/author"
             android:textSize="12sp"
             tools:text="30km S of" />
 
@@ -47,11 +47,23 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="@color/Section"
+            android:layout_gravity="end"
+            android:textSize="12sp"
+            tools:text="30km S of" />
+        <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textColor="@color/textColorDataDetails"
+            android:textColor="@color/Time"
             android:textSize="12sp"
             tools:text="Mar 6, 2010" />
 
@@ -60,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textColor="@color/textColorDataDetails"
+            android:textColor="@color/Time"
             android:textSize="12sp"
             tools:text="3:00 PM" />
 

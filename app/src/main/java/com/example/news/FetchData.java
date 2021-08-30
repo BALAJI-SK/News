@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public  class FetchData {
-  private static final String LOG_MSG=  "FetchData Error";
+
 
     public static List<News> fetchFromUrl(String link){
         URL url =createUrl(link);
@@ -25,7 +25,7 @@ public  class FetchData {
 try {
     jsonResponse=makeHTTPRequest(url);
 }catch (Exception ignored){
-    Log.e(LOG_MSG, "Data Fetch Form HTTP Cannot be done");
+    Log.e(Constant.LOG_MSG, "Data Fetch Form HTTP Cannot be done");
 }
         assert jsonResponse != null;
         return extractFromString(jsonResponse);
@@ -36,21 +36,27 @@ try {
         List<News> newsList=new ArrayList<>();
         try {
             JSONObject root = new JSONObject(jsonResponse);
-            JSONObject rootResponse= root.optJSONObject("response");
+            JSONObject rootResponse= root.optJSONObject(Constant.JSON_KEY_RESPONSE);
 
             assert rootResponse != null;
-            JSONArray results = rootResponse.optJSONArray("results");
+            JSONArray results = rootResponse.optJSONArray(Constant.JSON_KEY_RESULTS);
             for(int i=0;results !=null && i<results.length();i++){
                 JSONObject currentNews= results.optJSONObject(i);
-                String section =currentNews.optString("sectionName");
-                String date= currentNews.optString("webPublicationDate");
-                String title = currentNews.optString("webTitle");
-                String webLink= currentNews.optString( "webUrl");
-                newsList.add(new News(section, title, date, webLink));
+                String section =currentNews.optString(Constant.JSON_KEY_SECTION_NAME);
+                String date= currentNews.optString(Constant.JSON_KEY_WEB_PUBLICATION_DATE);
+                String title = currentNews.optString(Constant.JSON_KEY_WEB_TITLE);
+                String webLink= currentNews.optString( Constant.JSON_KEY_WEB_URL);
+                JSONArray tags =currentNews.optJSONArray(Constant.JSON_KEY_TAGS);
+                String author="";
+                if(tags!=null){
+                   JSONObject tagsObject= tags.optJSONObject(0);
+                   author=tagsObject.optString(Constant.JSON_KEY_AUTHOR);
+                }else{Log.e(Constant.LOG_MSG, "Author not found");}
+                newsList.add(new News(section, title, date, webLink, author));
             }
 
         }catch (JSONException ignore){
-        Log.e(LOG_MSG, "Unable to fetch data from String");
+        Log.e(Constant.LOG_MSG, "Unable to fetch data from String");
         }
    return newsList;}
 
@@ -59,7 +65,7 @@ try {
         HttpURLConnection urlConnection;
         InputStream inputStream;
         if(url==null) {
-            Log.e(LOG_MSG, "URL is NULL");
+            Log.e(Constant.LOG_MSG, "URL is NULL");
             return null;}
             try {
              urlConnection= (HttpURLConnection) url.openConnection() ;
@@ -77,7 +83,7 @@ try {
    return jsonResponse; }
 
     private static String getInfoFromInputStream(InputStream inputStream) {
-        if(inputStream==null){Log.e(LOG_MSG, "NULl in InputStream");return null;
+        if(inputStream==null){Log.e(Constant.LOG_MSG, "NULl in InputStream");return null;
         }
         InputStreamReader inputStreamReader=new InputStreamReader(inputStream);
         BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
@@ -90,7 +96,7 @@ try {
                 line=bufferedReader.readLine();
             }
         }catch (IOException e){
-            Log.e(LOG_MSG, "Could not read data");
+            Log.e(Constant.LOG_MSG, "Could not read data");
         }
     return output.toString();}
 
@@ -101,7 +107,7 @@ try {
             url = new URL(link);
         }
         catch (MalformedURLException ignored){
-            Log.e(LOG_MSG, "URL Cannot be Created");
+            Log.e(Constant.LOG_MSG, "URL Cannot be Created");
         }
         return url;
     }

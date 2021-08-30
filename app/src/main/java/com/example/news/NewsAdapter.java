@@ -19,7 +19,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         super(context, 0, objects);
     }
 static  class ViewHolderItem{
-    TextView title,section, date,time;
+    TextView title,section, date,time,author;
 }
     @NonNull
     @Override
@@ -32,6 +32,7 @@ static  class ViewHolderItem{
             viewHolderItem.time=ListView.findViewById(R.id.time);
             viewHolderItem.section=ListView.findViewById(R.id.section);
             viewHolderItem.title=ListView.findViewById(R.id.title);
+            viewHolderItem.author=ListView.findViewById(R.id.author);
             ListView.setTag(viewHolderItem);
         }else {
             viewHolderItem=(ViewHolderItem) ListView.getTag();
@@ -41,7 +42,7 @@ static  class ViewHolderItem{
         viewHolderItem.section.setText(currentNews.getSection());
         viewHolderItem.date.setText(currentNews.getDate());
         viewHolderItem.time.setText(currentNews.getTime());
-
+       viewHolderItem.author.setText(currentNews.getAuthor());
         return ListView;
     }
 }

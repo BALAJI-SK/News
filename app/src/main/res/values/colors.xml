@@ -12,4 +12,7 @@
 
     <!-- Text color for the primary location of the earthquake in the list item -->
     <color name="textColorTitleLocation">#2B3D4D</color>
+    <color name="Section">#C03823</color>
+    <color name="author">#4A7BA7</color>
+    <color name="Time">#213233</color>
 </resources>
