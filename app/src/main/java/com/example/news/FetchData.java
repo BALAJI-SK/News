@@ -49,9 +49,10 @@ try {
                 JSONArray tags =currentNews.optJSONArray(Constant.JSON_KEY_TAGS);
                 String author="";
                 if(tags!=null){
-                   JSONObject tagsObject= tags.optJSONObject(0);
+                    for(int j=0;j< tags.length();j++){
+                   JSONObject tagsObject= tags.optJSONObject(j);
                    author=tagsObject.optString(Constant.JSON_KEY_AUTHOR);
-                }else{Log.e(Constant.LOG_MSG, "Author not found");}
+                }}else{Log.e(Constant.LOG_MSG, "Author not found");}
                 newsList.add(new News(section, title, date, webLink, author));
             }
 
