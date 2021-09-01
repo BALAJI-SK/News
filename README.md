@@ -1,6 +1,6 @@
 # News App, Stage 1
 
-*Created as part of Udacity's Android Basics by Google Nanodegree Program*
+*Created as part of Udacity's Android Basics by Google *
 ____________
 
 The goal is to create a News Feed app which gives a user regularly-updated news from the internet related to a particular topic, person, or location. The presentation of the information as well as the topic is up to you.
@@ -40,3 +40,6 @@ NewsApp stage1 - NoData
 
 <img src="https://user-images.githubusercontent.com/60575418/131625433-ca8c9c89-a7b0-49ba-aa2c-c385beefd784.png" width=200 heigth=300/>  <img src ="https://user-images.githubusercontent.com/60575418/131625441-b908ce5d-a34d-41ed-b687-bd6b3f77bdef.png" width=200 heigth=300 />   <img src="https://user-images.githubusercontent.com/60575418/131625436-785ba0cf-837c-43d6-be6b-7306f73dc909.png" width=200 heigth=300 />  
 <img src="https://user-images.githubusercontent.com/60575418/131625445-badc5824-42af-4aea-a90f-88798d9d5f1d.png" width=200 heigth=300 /><img src="https://user-images.githubusercontent.com/60575418/131625416-c69b65fa-c59b-46b8-bad5-5d2652314fa2.png" width=200 heigth=300 />  <img src="https://user-images.githubusercontent.com/60575418/131625429-374bf7dc-8ef2-4ef5-8293-c5a02ab03a2e.png" width=200 heigth=300 />
+
+## RESULT
+Udacity reviewed the project, and it was approved.
