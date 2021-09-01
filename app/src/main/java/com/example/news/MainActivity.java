@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
              noInternet.setVisibility(View.VISIBLE);
              indicator.setVisibility(View.INVISIBLE);
          }else {
-
+             indicator.setVisibility(View.VISIBLE);
              getSupportLoaderManager().initLoader(Constant.NEWS_LOADER_ID, null, this);
 
-            indicator.setVisibility(View.INVISIBLE);
+
            newsAdapter = new NewsAdapter(MainActivity.this,new ArrayList<>());
             ListView listView= findViewById(R.id.list_view);
 
